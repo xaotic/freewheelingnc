@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css">
+    <link rel="stylesheet" href= "css/leaflet.label.css">
+    <style>
+      #map, html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      g {
+        -webkit-filter: drop-shadow(5px 5px 2px black);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <script src="js/esri-leaflet.js"></script>
+    <script src="js/leaflet.label.js"></script>
+    <script>
+      $(document).ready(function () {
+        var map =   L.map('map', {minZoom: 12, maxZoom: 15}).setView([35.78, -78.64447], 12);
+    		L.tileLayer('https://{s}.tiles.mapbox.com/v3/jgreco.i23lg3d8/{z}/{x}/{y}.png', {
+    		    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+    		    maxZoom: 18
+    		}).addTo(map);
+        $.getJSON('bikemap.geojson',  function(json, textStatus) {
+          //L.geoJson(json, {style: {"color": "black", "opacity": 0.25, "weight" : 10}}).addTo(map);
+                var geoJson = L.geoJson(json, {
+                    onEachFeature: function (feature, layer) {
+                      if (feature.properties.name) {
+                        layer.bindLabel(feature.properties.name);
+                      }
+                    },
+                    style: function (feature) {
+                      switch (feature.properties.category) {
+                      case "Preferred Route":
+                        return {"color" : "#1d90d0", "opacity" : 0.8, "weight" : 6, "stroke": true};
+                      case "Difficult Connection":
+                        return {"color" : "#cb7327", "opacity" : 0.8, "weight" : 6};
+                      case "Bike Lanes":
+                        return {"color" : "#e458a0", "opacity" : 0.8, "weight" : 6};
+                      case "Sharrows":
+                        return {"color" : "#8972b3", "opacity" : 0.8, "weight" : 6};
+                      case "Paved Greenway":
+                        return {"color" : "#8ac33f", "opacity" : 0.8, "weight" : 6};
+                      case "Future Greenway":
+                        return {"color" : "#619143", "opacity" : 0.8, "weight" : 6, "dashArray" : "10 10 10 10", "lineCap" : "square"};
+                      case "Sidepath":
+                        return {"color" : "#ead515", "opacity" : 0.8, "weight" : 6};
+                      case "Unpaved Trail":
+                        return {"color" : "#ab9464", "opacity" : 0.8, "weight" : 6};
+                      }
+                    }});
+                geoJson.addTo(map);
+
+        });
+        $.getJSON('bikeshops.geojson',  function(json, textStatus) {
+                var icon = L.icon({iconUrl: 'img/bicycle-24@2x.png', iconSize: [24,24]});
+                var geoJson = L.geoJson(json, {
+                  onEachFeature: function (feature, layer) {
+                    layer.options.riseOnHover = true;
+                    if (feature.properties.Label) {
+                      layer.bindLabel(feature.properties.Label);
+                    }
+                  },
+                  pointToLayer: function(feature, latlng) {
+                  return new L.Marker(latlng, {icon: icon});
+                }});
+                geoJson.addTo(map);
+
+        });
+
+        $.getJSON('parking.geojson',  function(json, textStatus) {
+                var icon = L.icon({iconUrl: 'img/parking-24@2x.png', iconSize: [24,24]});
+                var geoJson = L.geoJson(json, {pointToLayer: function(feature, latlng) {
+                  return new L.Marker(latlng, {icon: icon});
+                }});
+                geoJson.addTo(map);
+
+        });
+        $.getJSON('places.geojson',  function(json, textStatus) {
+                var notable = L.icon({iconUrl: 'img/marker-24@2x.png', iconSize: [24,24]});
+                var stations = L.icon({iconUrl: 'img/bus-24@2x.png', iconSize: [24,24]});
+                var shopping = L.icon({iconUrl: 'img/shop-24@2x.png', iconSize: [24,24]});
+                var geoJson = L.geoJson(json, {
+                onEachFeature: function (feature, layer) {
+                  layer.options.riseOnHover = true;
+                  if (feature.properties.NAME) {
+                    layer.bindLabel(feature.properties.NAME);
+                  }
+                },
+                pointToLayer: function(feature, latlng) {
+                  var icon;
+                  switch (feature.properties.ICON) {
+                  case "Shopping Centers":
+                    icon = shopping;
+                    break;
+                  case "Bus Stations":
+                    icon = stations;
+                    break;
+                  case "Train Stations":
+                    icon = stations;
+                    break;
+                  case "Entertainment":
+                    icon = notable;
+                    break;
+                  case "Museums":
+                    icon = notable;
+                    break;
+                  case "Sports Facilities":
+                    icon = notable;
+                    break;
+                  }
+                  return new L.Marker(latlng, {icon: icon});
+                }});
+                geoJson.addTo(map);
+
+        });
+      });
+    </script>
+  </body>
+</html>
