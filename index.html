@@ -9,6 +9,9 @@
         height: 100%;
         margin: 0;
       }
+      .leaflet-container {
+        background: #eedfcc;
+      }
       g {
         -webkit-filter: drop-shadow(5px 5px 2px black);
       }
@@ -22,10 +25,10 @@
     <script src="js/leaflet.label.js"></script>
     <script>
       $(document).ready(function () {
-        var map =   L.map('map', {minZoom: 12, maxZoom: 15}).setView([35.78, -78.64447], 12);
-    		L.tileLayer('https://{s}.tiles.mapbox.com/v3/jgreco.i23lg3d8/{z}/{x}/{y}.png', {
+        var map =   L.map('map', {minZoom: 12, maxZoom: 16}).setView([35.78, -78.64447], 12);
+    		L.tileLayer('http://mapstest.raleighnc.gov/arcgis/rest/services/BikeBaseMap/MapServer/tile/{z}/{y}/{x}', {
     		    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
-    		    maxZoom: 18
+    		    maxZoom: 16
     		}).addTo(map);
         $.getJSON('bikemap.geojson',  function(json, textStatus) {
           //L.geoJson(json, {style: {"color": "black", "opacity": 0.25, "weight" : 10}}).addTo(map);
