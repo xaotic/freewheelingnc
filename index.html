@@ -35,7 +35,7 @@
       $(document).ready(function () {
         var map =   L.map('map', {minZoom: 12, maxZoom: 16}).setView([35.78, -78.64447], 12);
     		L.tileLayer('http://mapstest.raleighnc.gov/arcgis/rest/services/BikeBaseMap/MapServer/tile/{z}/{y}/{x}', {
-    		    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
+    		    attribution: 'Map data &copy; <a href="http://www.raleighnc.gov/business/content/ITechAdmin/Articles/GeographicInformationServices.html">City of Raleigh GIS</a>',
     		    maxZoom: 16
     		}).addTo(map);
         L.control.locate().addTo(map);
