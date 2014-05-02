@@ -90,7 +90,11 @@
 
         $.getJSON('parking.geojson',  function(json, textStatus) {
                 var icon = L.icon({iconUrl: 'img/parking-24@2x.png', iconSize: [24,24]});
-                var geoJson = L.geoJson(json, {pointToLayer: function(feature, latlng) {
+                var geoJson = L.geoJson(json, {
+                  onEachFeature: function (feature, layer) {
+                    layer.bindPopup("<strong>"+feature.properties.TYPE+"</strong><p/>"+feature.properties.DIRECTIONS+"<p/>"+feature.properties.ADDRESS);
+                  },
+                  pointToLayer: function(feature, latlng) {
                   return new L.Marker(latlng, {icon: icon});
                 }});
                 geoJson.addTo(map);
