@@ -4,7 +4,7 @@
   	<title>Bike Map</title>
   	<meta charset="utf-8">
   	<meta http-equiv="X-UA-Compatible" content="IE=edge">
-  	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">    
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css">
     <link rel="stylesheet" href= "css/leaflet.label.css">
     <style>
@@ -38,28 +38,29 @@
           //L.geoJson(json, {style: {"color": "black", "opacity": 0.25, "weight" : 10}}).addTo(map);
                 var geoJson = L.geoJson(json, {
                     onEachFeature: function (feature, layer) {
-                      if (feature.properties.name) {
-                        layer.bindLabel(feature.properties.name);
-                      }
+                      //if (feature.properties.name) {
+                        //layer.bindLabel(feature.properties.name);
+                        layer.bindPopup("<strong>"+feature.properties.category+"</strong>"+((feature.properties.name)?"<br/>"+feature.properties.name:""));
+                    //  }
                     },
-                    style: function (feature) {
+                    style: function (feature, layer) {
                       switch (feature.properties.category) {
                       case "Preferred Route":
-                        return {"color" : "#1d90d0", "opacity" : 0.8, "weight" : 6, "stroke": true};
+                        return {"color" : "#1d90d0", "opacity" : 1, "weight" : 6, "stroke": true};
                       case "Difficult Connection":
-                        return {"color" : "#cb7327", "opacity" : 0.8, "weight" : 6};
+                        return {"color" : "#cb7327", "opacity" : 1, "weight" : 6};
                       case "Bike Lanes":
-                        return {"color" : "#e458a0", "opacity" : 0.8, "weight" : 6};
+                        return {"color" : "#e458a0", "opacity" : 1, "weight" : 6};
                       case "Sharrows":
-                        return {"color" : "#8972b3", "opacity" : 0.8, "weight" : 6};
+                        return {"color" : "#8972b3", "opacity" : 1, "weight" : 6};
                       case "Paved Greenway":
-                        return {"color" : "#8ac33f", "opacity" : 0.8, "weight" : 6};
+                        return {"color" : "#8ac33f", "opacity" : 1, "weight" : 6};
                       case "Future Greenway":
-                        return {"color" : "#619143", "opacity" : 0.8, "weight" : 6, "dashArray" : "10 10 10 10", "lineCap" : "square"};
+                        return {"color" : "#619143", "opacity" : 1, "weight" : 6, "dashArray" : "10 10 10 10", "lineCap" : "square"};
                       case "Sidepath":
-                        return {"color" : "#ead515", "opacity" : 0.8, "weight" : 6};
+                        return {"color" : "#ead515", "opacity" : 1, "weight" : 6};
                       case "Unpaved Trail":
-                        return {"color" : "#ab9464", "opacity" : 0.8, "weight" : 6};
+                        return {"color" : "#ab9464", "opacity" : 1, "weight" : 6};
                       }
                     }});
                 geoJson.addTo(map);
@@ -70,8 +71,9 @@
                 var geoJson = L.geoJson(json, {
                   onEachFeature: function (feature, layer) {
                     layer.options.riseOnHover = true;
-                    if (feature.properties.Label) {
-                      layer.bindLabel(feature.properties.Label);
+                    if (feature.properties.label) {
+                      //layer.bindLabel(feature.properties.Label);
+                      layer.bindPopup(feature.properties.label);
                     }
                   },
                   pointToLayer: function(feature, latlng) {
@@ -97,7 +99,9 @@
                 onEachFeature: function (feature, layer) {
                   layer.options.riseOnHover = true;
                   if (feature.properties.NAME) {
-                    layer.bindLabel(feature.properties.NAME);
+                    //layer.bindLabel(feature.properties.NAME);
+                    layer.bindPopup(feature.properties.NAME);
+
                   }
                 },
                 pointToLayer: function(feature, latlng) {
