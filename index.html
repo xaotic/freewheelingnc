@@ -7,6 +7,8 @@
   	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
     <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css">
     <link rel="stylesheet" href= "css/leaflet.label.css">
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.css' rel='stylesheet' />
+
     <style>
       #map, html, body {
         width: 100%;
@@ -26,6 +28,8 @@
     <script src="https://code.jquery.com/jquery.js"></script>
     <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
     <script src="js/esri-leaflet.js"></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js'></script>
+
     <script src="js/leaflet.label.js"></script>
     <script>
       $(document).ready(function () {
@@ -34,6 +38,7 @@
     		    attribution: 'Map data &copy; <a href="http://openstreetmap.org">OpenStreetMap</a> contributors, <a href="http://creativecommons.org/licenses/by-sa/2.0/">CC-BY-SA</a>, Imagery © <a href="http://cloudmade.com">CloudMade</a>',
     		    maxZoom: 16
     		}).addTo(map);
+        L.control.locate().addTo(map);
         $.getJSON('bikemap.geojson',  function(json, textStatus) {
           //L.geoJson(json, {style: {"color": "black", "opacity": 0.25, "weight" : 10}}).addTo(map);
                 var geoJson = L.geoJson(json, {
