@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+  	<title>Bike Map</title>
+  	<meta charset="utf-8">
+  	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+  	<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+    <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.css">
+    <link rel="stylesheet" href= "css/leaflet.label.css">
+    <link href='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.css' rel='stylesheet' />
+
+    <style>
+      #map, html, body {
+        width: 100%;
+        height: 100%;
+        margin: 0;
+      }
+      .leaflet-container {
+        background: #eedfcc;
+      }
+      g {
+        -webkit-filter: drop-shadow(5px 5px 2px black);
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+    <script src="https://code.jquery.com/jquery.js"></script>
+    <script src="http://cdn.leafletjs.com/leaflet-0.7.2/leaflet.js"></script>
+    <script src="js/esri-leaflet.js"></script>
+    <script src='//api.tiles.mapbox.com/mapbox.js/plugins/leaflet-locatecontrol/v0.24.0/L.Control.Locate.js'></script>
+
+    <script src="js/leaflet.label.js"></script>
+    <script>
+      $(document).ready(function () {
+        var map =   L.map('map', {minZoom: 12, maxZoom: 16}).setView([35.78, -78.64447], 12);
+    		L.tileLayer('http://mapstest.raleighnc.gov/arcgis/rest/services/BikeBaseMap/MapServer/tile/{z}/{y}/{x}', {
+    		    attribution: 'Map data &copy; <a href="http://www.raleighnc.gov/business/content/ITechAdmin/Articles/GeographicInformationServices.html">City of Raleigh GIS</a>',
+    		    maxZoom: 16
+    		}).addTo(map);
+        L.control.locate().addTo(map);
+        $.getJSON('bikemap.geojson',  function(json, textStatus) {
+          //L.geoJson(json, {style: {"color": "black", "opacity": 0.25, "weight" : 10}}).addTo(map);
+                var geoJson = L.geoJson(json, {
+                    onEachFeature: function (feature, layer) {
+                      //if (feature.properties.name) {
+                        //layer.bindLabel(feature.properties.name);
+                        layer.bindPopup("<strong>"+feature.properties.category+"</strong>"+((feature.properties.name)?"<br/>"+feature.properties.name:""));
+                    //  }
+                    },
+                    style: function (feature, layer) {
+                      switch (feature.properties.category) {
+                      case "Preferred Route":
+                        return {"color" : "#1d90d0", "opacity" : 1, "weight" : 6, "stroke": true};
+                      case "Difficult Connection":
+                        return {"color" : "#cb7327", "opacity" : 1, "weight" : 6};
+                      case "Bike Lanes":
+                        return {"color" : "#e458a0", "opacity" : 1, "weight" : 6};
+                      case "Sharrows":
+                        return {"color" : "#8972b3", "opacity" : 1, "weight" : 6};
+                      case "Paved Greenway":
+                        return {"color" : "#8ac33f", "opacity" : 1, "weight" : 6};
+                      case "Future Greenway":
+                        return {"color" : "#619143", "opacity" : 1, "weight" : 6, "dashArray" : "10 10 10 10", "lineCap" : "square"};
+                      case "Sidepath":
+                        return {"color" : "#ead515", "opacity" : 1, "weight" : 6};
+                      case "Unpaved Trail":
+                        return {"color" : "#ab9464", "opacity" : 1, "weight" : 6};
+                      }
+                    }});
+                geoJson.addTo(map);
+
+        });
+        $.getJSON('bikeshops.geojson',  function(json, textStatus) {
+                var icon = L.icon({iconUrl: 'img/bicycle-24@2x.png', iconSize: [24,24]});
+                var geoJson = L.geoJson(json, {
+                  onEachFeature: function (feature, layer) {
+                    layer.options.riseOnHover = true;
+                    if (feature.properties.label) {
+                      //layer.bindLabel(feature.properties.Label);
+                      layer.bindPopup(feature.properties.label);
+                    }
+                  },
+                  pointToLayer: function(feature, latlng) {
+                  return new L.Marker(latlng, {icon: icon});
+                }});
+                geoJson.addTo(map);
+
+        });
+
+        $.getJSON('parking.geojson',  function(json, textStatus) {
+                var icon = L.icon({iconUrl: 'img/parking-24@2x.png', iconSize: [24,24]});
+                var geoJson = L.geoJson(json, {
+                  onEachFeature: function (feature, layer) {
+                    layer.bindPopup("<strong>"+feature.properties.TYPE+"</strong><p/>"+feature.properties.DIRECTIONS+"<p/>"+feature.properties.ADDRESS);
+                  },
+                  pointToLayer: function(feature, latlng) {
+                  return new L.Marker(latlng, {icon: icon});
+                }});
+                geoJson.addTo(map);
+
+        });
+        $.getJSON('places.geojson',  function(json, textStatus) {
+                var notable = L.icon({iconUrl: 'img/marker-24@2x.png', iconSize: [24,24]});
+                var stations = L.icon({iconUrl: 'img/bus-24@2x.png', iconSize: [24,24]});
+                var shopping = L.icon({iconUrl: 'img/shop-24@2x.png', iconSize: [24,24]});
+                var geoJson = L.geoJson(json, {
+                onEachFeature: function (feature, layer) {
+                  layer.options.riseOnHover = true;
+                  if (feature.properties.NAME) {
+                    //layer.bindLabel(feature.properties.NAME);
+                    layer.bindPopup(feature.properties.NAME);
+
+                  }
+                },
+                pointToLayer: function(feature, latlng) {
+                  var icon;
+                  switch (feature.properties.ICON) {
+                  case "Shopping Centers":
+                    icon = shopping;
+                    break;
+                  case "Bus Stations":
+                    icon = stations;
+                    break;
+                  case "Train Stations":
+                    icon = stations;
+                    break;
+                  case "Entertainment":
+                    icon = notable;
+                    break;
+                  case "Museums":
+                    icon = notable;
+                    break;
+                  case "Sports Facilities":
+                    icon = notable;
+                    break;
+                  }
+                  return new L.Marker(latlng, {icon: icon});
+                }});
+                geoJson.addTo(map);
+
+        });
+      });
+    </script>
+  </body>
+</html>
