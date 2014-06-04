@@ -1,0 +1,46 @@
+
+<html><head><meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<script src="http:////www.parsecdn.com/js/parse-1.2.18.min.js"></script>
+<script type="text/javascript">
+var watchid;
+Parse.initialize("Uw1GKMYyzQO36DUByJhoCWI7S2BSuSF7qBHsi3QL", "b8pN3kblXCAUQONS1ZS8sv1pusOKzmWLRT2YIjeg");
+function POS(){
+var options = {
+  enableHighAccuracy: true,
+  timeout: 5000,
+  maximumAge: 20000
+};
+
+function success(pos) {
+  var crd = pos.coords;
+  var coordObject = Parse.Object.extend('coordObject');
+  var crdObject = new coordObject();
+crdObject.save({ 'latitude':crd.latitude, 'longitude':crd.longitude}).then(function(object) {
+  alert('Your current position is:\n'+
+		'Latitude : ' + crd.latitude + '\n'+
+		'Longitude: ' + crd.longitude + '\n'+
+		'More or less ' + crd.accuracy + ' meters.\n'+
+		'watchPositionTransactionId: ' + watchid)
+});
+
+  console.log('Your current position is:');
+  console.log('Latitude : ' + crd.latitude);
+  console.log('Longitude: ' + crd.longitude);
+  console.log('More or less ' + crd.accuracy + ' meters.');
+  console.log('Taken at ' + pos.timestamp);
+  console.log('watchPositionTransactionId: ' + watchid);
+
+};
+
+function error(err) {
+  console.warn('ERROR(' + err.code + '): ' + err.message);
+};
+watchid=navigator.geolocation.watchPosition(success, error, options);
+}
+</script>
+</head>
+<body onload="POS()">
+<div id="display"></div>
+
+
+</body></html>
