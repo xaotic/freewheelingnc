@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+
+<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css" />
+
+<script src="http://code.jquery.com/jquery-1.9.1.min.js"></script>
+<script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"></script>
+<style>
+/* Custom indentations are needed because the length of custom labels differs from
+   the length of the standard labels */
+.custom-size-flipswitch.ui-flipswitch .ui-btn.ui-flipswitch-on {
+    text-indent: -5.9em;
+}
+.custom-size-flipswitch.ui-flipswitch .ui-flipswitch-off {
+    text-indent: 0.5em;
+}
+/* Custom widths are needed because the length of custom labels differs from
+   the length of the standard labels */
+.custom-size-flipswitch.ui-flipswitch {
+    width: 8.875em;
+}
+.custom-size-flipswitch.ui-flipswitch.ui-flipswitch-active {
+    padding-left: 7em;
+    width: 1.875em;
+}
+@media (min-width: 28em) {
+    /*Repeated from rule .ui-flipswitch above*/
+    .ui-field-contain > label + .custom-size-flipswitch.ui-flipswitch {
+        width: 1.875em;
+    }
+}
+</style>
+<title></title>
+</head>
+<body>
+	<div data-role="page" id="home">
+		<div data-role="header">
+		<div data-role="navbar">
+    <ul>
+        <li><a href="#home" class="ui-btn-active">Home</a></li>
+        <li><a href="#ride">Ride</a></li>
+        <li><a href="#map">Map</a></li>
+    </ul>
+</div><!-- /navbar -->
+		</div>
+		<div data-role="main" class="ui-content">
+		<h1>HOME</h1>
+		</div>
+		<div data-role="footer">&copy; FreeWheelingNC 2014
+		</div>
+	</div>
+	
+	<div data-role="page" id="ride">
+			<div data-role="header">
+			<div data-role="navbar">
+			<ul>
+				<li><a href="#home">Home</a></li>
+				<li><a href="#ride" class="ui-btn-active">Ride</a></li>
+				<li><a href="#map">Map</a></li>
+			</ul>
+</div><!-- /navbar -->
+		</div>
+		<div data-role="main" class="ui-content">
+		<h1>RIDE</h1>
+		<br />
+	<form>
+    <label for="flip-checkbox" class="ui-hidden-accessible">Flip toggle switch checkbox:</label>
+    <input name="flip-checkbox" id="flip-checkbox" type="checkbox" data-wrapper-class="custom-size-flipswitch" data-on-text="Sending" data-off-text="Disabled" data-role="flipswitch">
+
+	</form>
+		</div>
+		<div data-role="footer">&copy; FreeWheelingNC 2014
+		</div>
+	</div>
+	
+	<div data-role="page" id="map">
+		<div data-role="header">
+		<div data-role="navbar">
+    <ul>
+        <li><a href="#home">Home</a></li>
+        <li><a href="#ride">Ride</a></li>
+        <li><a href="#map" class="ui-btn-active">Map</a></li>
+    </ul>
+</div><!-- /navbar -->
+		</div>
+		<div data-role="main" class="ui-content">
+		<h1>MAP</h1>
+		</div>
+		<div data-role="footer">&copy; FreeWheelingNC 2014
+		</div>
+	</div>
+</body>
+</html>
